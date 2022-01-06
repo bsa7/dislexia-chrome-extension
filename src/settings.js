@@ -1,7 +1,7 @@
 export class Settings {
   constructor() {}
 
-  dislexicDisabled = async ({ origin = this.currentOrigin }) => {
+  dislexicDisabled = async (origin = this.currentOrigin) => {
     if (!/^https?:\/\//.test(origin)) return true
 
     return await this.getStorageData(this.disabledStorageKey(origin)) || false

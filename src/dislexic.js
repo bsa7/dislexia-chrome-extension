@@ -34,8 +34,6 @@ export class Dislexic {
   }
 
   call = () => {
-    // const disabled = await this.settings.dislexicDisabledForThisHost()
-    // console.log('Dislexic.call#39', { disabled })
     this.allNodes.forEach((node) => {
       if (node.innerHTML && !this.NOT_APPLICABLE_NODE_TYPES.includes(node.localName)) {
         if (!node.children.length && !/<[^>]+\/?>/m.test(node.innerHTML)) {

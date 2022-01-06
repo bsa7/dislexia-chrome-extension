@@ -1,16 +1,13 @@
-import { PopupPage } from "./popup/popupPage.js"
 import { Settings } from "./settings.js"
+import { PopupPage } from "./popup/popupPage.js"
 
 const onTabUpdated = async (tabId, action, tab) => {
   const settings = new Settings()
-  // await settings.disableDislexic({ origin: 'https://stackoverflow.com' })
-  const origin = new URL(tab.url).origin
-  const disabled = await settings.dislexicDisabled({ origin })
-  console.log('onTabUpdated#7', { tabId, action, tab, disabled })
+  const popupPage = new PopupPage(settings)
+  const { origin } = new URL(tab.url)
+  if (await settings.dislexicDisabled(origin)) return
 
-  if (disabled) return
-
-  new PopupPage().runBackgroundScript()
+  popupPage.runBackgroundScript()
 }
 
 chrome.tabs.onUpdated.addListener(onTabUpdated)
