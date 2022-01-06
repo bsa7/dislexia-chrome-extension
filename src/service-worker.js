@@ -1,5 +1,5 @@
-import { PopupPage } from "./src/popupPage.js"
-import { Settings } from "./src/settings.js"
+import { PopupPage } from "./popup/popupPage.js"
+import { Settings } from "./settings.js"
 
 const onTabUpdated = async (tabId, action, tab) => {
   const settings = new Settings()

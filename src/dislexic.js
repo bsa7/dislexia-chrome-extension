@@ -5,7 +5,6 @@ export class Dislexic {
     this.UNICODE_WORD_X_REG_EXP = XRegExp('\\pL{3,}', 'ig')
     this.NOT_APPLICABLE_NODE_TYPES = ['script', 'style']
     this.allNodes = Array.from(document.body.getElementsByTagName('*'))
-    // this.settings = new Settings()
   }
 
   shuffle = (arr = []) => {

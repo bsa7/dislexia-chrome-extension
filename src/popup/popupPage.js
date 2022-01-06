@@ -11,4 +11,9 @@ export class PopupPage {
       }
     })
   }
+
+  initialize = () => {
+    const body = document.querySelector('body')
+    body.style.backgroundColor = '#ee9999'
+  }
 }
