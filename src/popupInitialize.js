@@ -1,5 +1,5 @@
-initialize = () => {
-  alert('initialize#5')
+const initialize = () => {
+  console.log('initialize#5')
 }
 
 initialize()

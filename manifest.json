@@ -9,7 +9,7 @@
   },
   "description": "This extension demonstrates a dislexical user disorder when you reading page text.",
   "host_permissions": [
-    "*://*/*"
+    "*://*/?*"
   ],
   "icons": {
     "16": "images/get_started16.png",
@@ -28,7 +28,8 @@
     "activeTab",
     "declarativeContent",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "version": "0.0.1",
   "web_accessible_resources": [{

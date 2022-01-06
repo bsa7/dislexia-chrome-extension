@@ -1,8 +1,11 @@
+// import { Settings } from './settings'
+
 export class Dislexic {
   constructor() {
     this.UNICODE_WORD_X_REG_EXP = XRegExp('\\pL{3,}', 'ig')
     this.NOT_APPLICABLE_NODE_TYPES = ['script', 'style']
     this.allNodes = Array.from(document.body.getElementsByTagName('*'))
+    // this.settings = new Settings()
   }
 
   shuffle = (arr = []) => {
@@ -32,6 +35,8 @@ export class Dislexic {
   }
 
   call = () => {
+    // const disabled = await this.settings.dislexicDisabledForThisHost()
+    // console.log('Dislexic.call#39', { disabled })
     this.allNodes.forEach((node) => {
       if (node.innerHTML && !this.NOT_APPLICABLE_NODE_TYPES.includes(node.localName)) {
         if (!node.children.length && !/<[^>]+\/?>/m.test(node.innerHTML)) {
