@@ -1,7 +1,7 @@
 export class Dislexic {
   constructor() {
     this.UNICODE_WORD_X_REG_EXP = XRegExp('\\pL{3,}', 'ig')
-    this.NOT_APPLICABLE_NODE_TYPES = ['script']
+    this.NOT_APPLICABLE_NODE_TYPES = ['script', 'style']
     this.allNodes = Array.from(document.body.getElementsByTagName('*'))
   }
 
