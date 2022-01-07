@@ -1,5 +1,5 @@
 (async () => {
-  const src = chrome.runtime.getURL('src/dislexic.js')
-  const { Dislexic } = await import(src)
+  const dislexicSrc = chrome.runtime.getURL('src/dislexic.js')
+  const { Dislexic } = await import(dislexicSrc)
   new Dislexic().call()
 })()

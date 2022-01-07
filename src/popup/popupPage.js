@@ -2,11 +2,11 @@ import { Settings } from '../settings.js'
 
 export class PopupPage {
   constructor() {
-    this.origin = undefined
     this.settings = new Settings()
   }
 
-  runBackgroundScript = () => {
+  runBackgroundScript = async () => {
+    this.settings.setIcon()
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (typeof tabs !== 'undefined' && typeof tabs[0] !== 'undefined') {
         chrome.scripting.executeScript({
@@ -34,8 +34,8 @@ export class PopupPage {
   }
 
   changeDisabledStatusForThisOrigin = async () => {
-    const disabled = await this.settings.dislexicDisabled(this.origin)
-    await this.settings.changeDisabledStatus({ origin: this.origin, disabled: !disabled })
+    const disabled = await this.settings.dislexicDisabled(await this.settings.origin())
+    await this.settings.changeDisabledStatus({ origin: await this.settings.origin(), disabled: !disabled })
     this.reflectChangesForOrigin()
   }
 
@@ -54,31 +54,31 @@ export class PopupPage {
   }
 
   reflectChangesForOrigin = async () => {
-    const disabledForOrigin = await this.settings.dislexicDisabled(this.origin)
+    const origin = await this.settings.origin()
+    const disabledForOrigin = await this.settings.dislexicDisabled(origin)
     this.statusForOriginSpan.innerHTML = this.disabledState(disabledForOrigin)
     this.changeDisabledStatusForOriginButton.innerHTML = this.disableAction(disabledForOrigin)
+    this.settings.setIcon()
   }
 
   reflectChangesForAll = async () => {
+    const origin = await this.settings.origin()
     const disabledForAll = await this.settings.dislexicDisabled()
     this.statusForAllSpan.innerHTML = this.disabledState(disabledForAll)
     this.changeDisabledStatusForAllButton.innerHTML = this.disableAction(disabledForAll)
+    this.settings.setIcon()
   }
 
-  initialize = () => {
+  initialize = async () => {
     const body = document.querySelector('body')
     body.style.backgroundColor = '#ee7700'
 
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      this.origin = new URL(tabs[0].url).origin
+    const disabledForOrigin = await this.settings.dislexicDisabled(await this.settings.origin())
+    this.reflectChangesForOrigin()
+    this.changeDisabledStatusForOriginButton.addEventListener('click', this.changeDisabledStatusForThisOrigin)
 
-      const disabledForOrigin = await this.settings.dislexicDisabled(this.origin)
-      this.reflectChangesForOrigin()
-      this.changeDisabledStatusForOriginButton.addEventListener('click', this.changeDisabledStatusForThisOrigin)
-
-      const disabledForAll = await this.settings.dislexicDisabled()
-      this.reflectChangesForAll()
-      this.changeDisabledStatusForAllButton.addEventListener('click', this.changeDisabledStatusForAll)
-    })
+    const disabledForAll = await this.settings.dislexicDisabled()
+    this.reflectChangesForAll()
+    this.changeDisabledStatusForAllButton.addEventListener('click', this.changeDisabledStatusForAll)
   }
 }
