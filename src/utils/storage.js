@@ -24,4 +24,12 @@ export class Storage {
       })
     })
   }
+
+  removeData(key) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.remove([key], () => {
+        return this.lastError ? reject(this.runtimeError) : resolve()
+      })
+    })
+  }
 }

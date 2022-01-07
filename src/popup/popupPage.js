@@ -25,27 +25,48 @@ export class PopupPage {
     return document.querySelector('#dislexic-status-for-all')
   }
 
-  get changeDisabledStatusForOriginButton() {
-    return document.querySelector('#change-status-for-this-origin')
+  get disableForOriginButton() {
+    return document.querySelector('#for-this-origin button#disable')
+  }
+
+  get enableForOriginButton() {
+    return document.querySelector('#for-this-origin button#enable')
+  }
+
+  get unsetForOriginButton() {
+    return document.querySelector('#for-this-origin button#unset')
   }
 
   get changeDisabledStatusForAllButton() {
     return document.querySelector('#change-status-for-all')
   }
 
-  changeDisabledStatusForThisOrigin = async () => {
-    const disabled = await this.settings.dislexicDisabled(await this.settings.origin())
-    await this.settings.changeDisabledStatus({ origin: await this.settings.origin(), disabled: !disabled })
+  disableForThisOrigin = async () => {
+    await this.settings.changeDisabledStatus({ origin: await this.settings.origin(), disabled: true })
+    this.reflectChangesForOrigin()
+  }
+
+  enableForThisOrigin = async () => {
+    await this.settings.changeDisabledStatus({ origin: await this.settings.origin(), disabled: false })
+    this.reflectChangesForOrigin()
+  }
+
+  unsetForThisOrigin = async () => {
+    await this.settings.changeDisabledStatus({ origin: await this.settings.origin(), disabled: undefined })
     this.reflectChangesForOrigin()
   }
 
   changeDisabledStatusForAll = async () => {
-    const disabled = await this.settings.dislexicDisabled()
+    const disabled = await this.settings.dislexicDisabledForAll()
     await this.settings.changeDisabledStatus({ disabled: !disabled })
     this.reflectChangesForAll()
   }
 
-  disabledState = (disabled) => {
+  disabledState = async (disabled) => {
+    if (typeof disabled === 'undefined') {
+      return await this.settings.dislexicDisabledForAll() ? 'DISABLED' : 'ENABLED'
+    }
+
     return disabled ? 'DISABLED' : 'ENABLED'
   }
 
@@ -53,19 +74,40 @@ export class PopupPage {
     return disable ? 'ENABLE' : 'DISABLE'
   }
 
+  disable = (domElement) => {
+    domElement.setAttribute('disabled', 'disabled')
+  }
+
+  enable = (domElement) => {
+    domElement.removeAttribute('disabled')
+  }
+
   reflectChangesForOrigin = async () => {
     const origin = await this.settings.origin()
-    const disabledForOrigin = await this.settings.dislexicDisabled(origin)
-    this.statusForOriginSpan.innerHTML = this.disabledState(disabledForOrigin)
-    this.changeDisabledStatusForOriginButton.innerHTML = this.disableAction(disabledForOrigin)
+    const disabledForOrigin = await this.settings.dislexicDisabledForOrigin(origin)
+    this.statusForOriginSpan.innerHTML = `${await this.disabledState(disabledForOrigin)} for ${typeof disabledForOrigin === 'undefined' ? 'all sites' : 'this site'}`
+
+    if (disabledForOrigin === true) {
+      this.disable(this.disableForOriginButton)
+      this.enable(this.enableForOriginButton)
+      this.enable(this.unsetForOriginButton)
+    } else if (disabledForOrigin === false) {
+      this.enable(this.disableForOriginButton)
+      this.disable(this.enableForOriginButton)
+      this.enable(this.unsetForOriginButton)
+    } else if (typeof disabledForOrigin === 'undefined') {
+      this.enable(this.disableForOriginButton)
+      this.enable(this.enableForOriginButton)
+      this.disable(this.unsetForOriginButton)
+    }
     this.settings.setIcon()
   }
 
   reflectChangesForAll = async () => {
     const origin = await this.settings.origin()
-    const disabledForAll = await this.settings.dislexicDisabled()
-    this.statusForAllSpan.innerHTML = this.disabledState(disabledForAll)
-    this.changeDisabledStatusForAllButton.innerHTML = this.disableAction(disabledForAll)
+    const disabledForAll = await this.settings.dislexicDisabledForAll()
+    this.statusForAllSpan.innerHTML = `${await this.disabledState(disabledForAll)} for all sites`
+    this.changeDisabledStatusForAllButton.innerHTML = `${await this.disableAction(disabledForAll)} for all sites`
     this.settings.setIcon()
   }
 
@@ -73,11 +115,11 @@ export class PopupPage {
     const body = document.querySelector('body')
     body.style.backgroundColor = '#ee7700'
 
-    const disabledForOrigin = await this.settings.dislexicDisabled(await this.settings.origin())
     this.reflectChangesForOrigin()
-    this.changeDisabledStatusForOriginButton.addEventListener('click', this.changeDisabledStatusForThisOrigin)
+    this.enableForOriginButton.addEventListener('click', this.enableForThisOrigin)
+    this.disableForOriginButton.addEventListener('click', this.disableForThisOrigin)
+    this.unsetForOriginButton.addEventListener('click', this.unsetForThisOrigin)
 
-    const disabledForAll = await this.settings.dislexicDisabled()
     this.reflectChangesForAll()
     this.changeDisabledStatusForAllButton.addEventListener('click', this.changeDisabledStatusForAll)
   }

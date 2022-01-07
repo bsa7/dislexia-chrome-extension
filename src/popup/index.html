@@ -5,11 +5,15 @@
   </head>
   <body>
     <div class="popup-header">
-      <h2 class="popup-header--title">Dislexic <span id="dislexic-status-for-origin"></span> for this site.</h2>
+      <h2 class="popup-header--title">Dislexic <span id="dislexic-status-for-origin"></span></h2>
+      <div id="for-this-origin" class="flex-row">
+        <button class="btn" id="disable">DISABLE</button>
+        <button class="btn" id="enable">ENABLE</button>
+        <button class="btn" id="unset">UNSET</button>
+      </div>
     </div>
-    <button class="btn" id="change-status-for-this-origin"></button>
 
-    <div>Dislexic are <span id="dislexic-status-for-all"></span> for all sites.</div>
+    <div>Dislexic are <span id="dislexic-status-for-all"></span></div>
     <button class="btn" id="change-status-for-all"></button>
     <script src="initialize.js"></script>
   </body>
