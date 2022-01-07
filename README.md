@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="images/get_started128.png"/>
+    <img src="images/logo-default128.png"/>
     <h1>Dislexical disorder chrome extension</h1>
     <h3>This extension demonstrates a dislexical user disorder when you reading page text.</h3>
 </div>
