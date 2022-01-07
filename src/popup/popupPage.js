@@ -45,16 +45,24 @@ export class PopupPage {
     this.reflectChangesForAll()
   }
 
+  disabledState = (disabled) => {
+    return disabled ? 'DISABLED' : 'ENABLED'
+  }
+
+  disableAction = (disable) => {
+    return disable ? 'ENABLE' : 'DISABLE'
+  }
+
   reflectChangesForOrigin = async () => {
     const disabledForOrigin = await this.settings.dislexicDisabled(this.origin)
-    this.statusForOriginSpan.innerHTML = disabledForOrigin ? 'DISABLED' : 'ENABLED'
-    this.changeDisabledStatusForOriginButton.innerHTML = disabledForOrigin ? 'ENABLE' : 'DISABLE'
+    this.statusForOriginSpan.innerHTML = this.disabledState(disabledForOrigin)
+    this.changeDisabledStatusForOriginButton.innerHTML = this.disableAction(disabledForOrigin)
   }
 
   reflectChangesForAll = async () => {
     const disabledForAll = await this.settings.dislexicDisabled()
-    this.statusForAllSpan.innerHTML = disabledForAll ? 'DISABLED' : 'ENABLED'
-    this.changeDisabledStatusForAllButton.innerHTML = disabledForAll ? 'ENABLE' : 'DISABLE'
+    this.statusForAllSpan.innerHTML = this.disabledState(disabledForAll)
+    this.changeDisabledStatusForAllButton.innerHTML = this.disableAction(disabledForAll)
   }
 
   initialize = () => {

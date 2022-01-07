@@ -6,10 +6,16 @@ export class Settings {
   }
 
   dislexicDisabled = async (origin = undefined) => {
-    if (typeof origin === 'undefined') return await this.storage.getData(this.disabledStorageKey()) || false
     if (!/^https?:\/\//.test(origin)) return true
+    if (typeof origin !== 'undefined') {
+      let disabled = await this.storage.getData(this.disabledStorageKey(origin))
+      if (typeof disabled === 'undefined') {
+        disabled = await this.storage.getData(this.disabledStorageKey())
+      }
+      return disabled
+    }
 
-    return await this.storage.getData(this.disabledStorageKey(origin)) || false
+    return await this.storage.getData(this.disabledStorageKey())
   }
 
   changeDisabledStatus = async ({ origin = undefined, disabled }) => {
