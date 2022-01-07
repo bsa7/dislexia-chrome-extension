@@ -6,12 +6,14 @@ export class Settings {
   }
 
   dislexicDisabled = async (origin = undefined) => {
-    if (!/^https?:\/\//.test(origin)) return true
     if (typeof origin !== 'undefined') {
+      if (!/^https?:\/\//.test(origin)) return true
+
       let disabled = await this.storage.getData(this.disabledStorageKey(origin))
       if (typeof disabled === 'undefined') {
         disabled = await this.storage.getData(this.disabledStorageKey())
       }
+
       return disabled
     }
 
