@@ -1,24 +1,18 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/SimGus/chrome-addon-v3-starter/master/logo/logo-128.png"/>
-    <h1>Chrome Extension v3 Starter</h1>
-    <h3>A minimal template of a Chrome v3 addon</h3>
+    <img src="images/get_started128.png"/>
+    <h1>Dislexical disorder chrome extension</h1>
+    <h3>This extension demonstrates a dislexical user disorder when you reading page text.</h3>
 </div>
 
-This repository contains a minimal Chrome/Chromium extension that uses the newest version of the manifest (v3).
-
-You can use it as a basis to develop an extension.
-It can also give you more insights about how to turn a v2 extension to v3.
-
-In other words, this is a **working, installable v3 extension** example meant for you to **jumpstart** the development of your own extension.
-
+This repository contains a Chrome/Chromium extension that uses the newest version of the manifest (v3).
 
 ## Installation
 - **Fork** this repo, then **clone your forked repo locally**. If you don't have a github account, you can simply download a zip of the repo and unzip it on your computer.
 - **Open [the extensions page](chrome://extensions)** in your browser: `chrome://extensions`. This link works on any chromium-based browser.
 - If you did not do it already, **toggle the "developer mode"**. This is usually a toggle button at the top right of the extensions page.
 - Click the button **_load unpacked extension_**.
-- In the window that pops up, **select the folder that contains this minimal extension**, then **click _ok_**.
-- **Done!** A new extension called _Chrome Addon v3 Starter_ should have appeared in the list.
+- In the window that pops up, **select the folder that contains this dislexic extension**, then **click _ok_**.
+- **Done!** A new extension called _Dislexia_ should have appeared in the list.
 
 ## Q&A
 > Does this work only on Chrome or on **other web browsers** as well?
