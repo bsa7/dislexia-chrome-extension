@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style src="styles/commonStyles.css"></style>
+    <link href="popupStyles.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div class="main-menu">
-      <h2 class="main-menu--title">Dislexic <span id="dislexic-disabled">ENABLED</span> for this site.</h2>
+    <div class="popup-header">
+      <h2 class="popup-header--title">Dislexic <span id="dislexic-status-for-origin"></span> for this site.</h2>
     </div>
-    <button id="force-dislexic-page">Undislexic page</button>
+    <button class="btn" id="change-status-for-this-origin"></button>
+
+    <div>Dislexic are <span id="dislexic-status-for-all"></span> for all sites.</div>
+    <button class="btn" id="change-status-for-all"></button>
     <script src="initialize.js"></script>
   </body>
 </html>

@@ -1,0 +1,22 @@
+.btn {
+  height: 36px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  outline: none;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn-enable:hover {
+  background-color: green;
+}
+
+.btn-disable:hover {
+  background-color: crimson;
+}
+
+.popup-header {
+  margin-bottom: 10px;
+}

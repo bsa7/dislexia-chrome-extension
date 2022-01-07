@@ -1,6 +1,9 @@
+import { Settings } from '../settings.js'
+
 export class PopupPage {
-  constructor(settings) {
-    this.settings = settings
+  constructor() {
+    this.origin = undefined
+    this.settings = new Settings()
   }
 
   runBackgroundScript = () => {
@@ -14,14 +17,60 @@ export class PopupPage {
     })
   }
 
+  get statusForOriginSpan() {
+    return document.querySelector('#dislexic-status-for-origin')
+  }
+
+  get statusForAllSpan() {
+    return document.querySelector('#dislexic-status-for-all')
+  }
+
+  get changeDisabledStatusForOriginButton() {
+    return document.querySelector('#change-status-for-this-origin')
+  }
+
+  get changeDisabledStatusForAllButton() {
+    return document.querySelector('#change-status-for-all')
+  }
+
+  changeDisabledStatusForThisOrigin = async () => {
+    const disabled = await this.settings.dislexicDisabled(this.origin)
+    await this.settings.changeDisabledStatus({ origin: this.origin, disabled: !disabled })
+    this.reflectChangesForOrigin()
+  }
+
+  changeDisabledStatusForAll = async () => {
+    const disabled = await this.settings.dislexicDisabled()
+    await this.settings.changeDisabledStatus({ disabled: !disabled })
+    this.reflectChangesForAll()
+  }
+
+  reflectChangesForOrigin = async () => {
+    const disabledForOrigin = await this.settings.dislexicDisabled(this.origin)
+    this.statusForOriginSpan.innerHTML = disabledForOrigin ? 'DISABLED' : 'ENABLED'
+    this.changeDisabledStatusForOriginButton.innerHTML = disabledForOrigin ? 'ENABLE' : 'DISABLE'
+  }
+
+  reflectChangesForAll = async () => {
+    const disabledForAll = await this.settings.dislexicDisabled()
+    this.statusForAllSpan.innerHTML = disabledForAll ? 'DISABLED' : 'ENABLED'
+    this.changeDisabledStatusForAllButton.innerHTML = disabledForAll ? 'ENABLE' : 'DISABLE'
+  }
+
   initialize = () => {
     const body = document.querySelector('body')
     body.style.backgroundColor = '#ee7700'
-    const statusSpan = document.querySelector('#dislexic-disabled')
+
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const { origin } = new URL(tabs[0].url)
-      const disabled = await this.settings.dislexicDisabled(origin)
-      statusSpan.innerHTML = disabled ? 'DISABLED' : 'ENABLED'
+      this.origin = new URL(tabs[0].url).origin
+
+      const disabledForOrigin = await this.settings.dislexicDisabled(this.origin)
+      this.reflectChangesForOrigin()
+      this.changeDisabledStatusForOriginButton.addEventListener('click', this.changeDisabledStatusForThisOrigin)
+
+      const disabledForAll = await this.settings.dislexicDisabled()
+      this.reflectChangesForAll()
+      this.changeDisabledStatusForAllButton.addEventListener('click', this.changeDisabledStatusForAll)
     })
   }
 }

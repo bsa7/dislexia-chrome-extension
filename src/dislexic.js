@@ -1,5 +1,3 @@
-// import { Settings } from './settings'
-
 export class Dislexic {
   constructor() {
     this.UNICODE_WORD_X_REG_EXP = XRegExp('\\pL{3,}', 'ig')
